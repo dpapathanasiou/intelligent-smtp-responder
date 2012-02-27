@@ -96,14 +96,14 @@ def reply_nyc_weather (email_dict, sender, subject, text, html=None):
     """In reply to email sent to nyc-weather@ -> lookup the current weather conditions and return it to the sender of this email"""
 
     # get the current weather for NYC from the National Weather Service feed
-    weather_xml = network.load_url('http://forecast.weather.gov/MapClick.php?lat=40.71980&lon=-73.99300&FcstType=dwml')
+    weather_xml = load_url('http://forecast.weather.gov/MapClick.php?lat=40.71980&lon=-73.99300&FcstType=dwml')
 
     if weather_xml is None:
         # there was an error gettting the weather data
         send('NYC Weather', 'Sorry, this service is temporarily unavailable', recipient_list=[sender], sender=server_auto_email)
     else:
         # parse the report from the xml and auto-reply with it as the message body
-        doc = etree.fromstring(d)
+        doc = etree.fromstring(weather_xml)
 
         # find the human-readable text report in the xml
         report = []
