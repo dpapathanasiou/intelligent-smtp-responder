@@ -1,17 +1,21 @@
 #!/usr/bin/python
 
 """
-These are the functions invoked when specific action inboxes (as defined in config.py) are sent email.
 
-Each responder function must accept this prototype/signature:
+These are the threaded classes instantiated and invoked when specific action inboxes (as defined in config.py) are sent email.
 
-def action_fn (email_dict, sender, subject, text, html=None):
+Each responder class __init__ function must accept this prototype/signature:
+
+def __init__ (self, email_dict, sender, subject, text, html=None):
 
     where email_dict is the dict returned by server/email_parser.parse()
     and sender, subject, text, and html are all strings, representing the sender's email address, subject line, body plain text, and body html text (if any)
 
+and contain a run() function which executes the specific request, sending the results back to the sender.
+
 """
 
+import threading
 import os
 import urllib
 
@@ -71,47 +75,83 @@ def pass_through (email_dict, sender, target, subject, text, html=None):
 # These methods corresponding to the values in the action_mailboxes dict defined in config.py
 # For convenience they are all implemented here, but for larger or more complex cases, they can call upon classes or functions defined elsewhere
 
+# With the exception of pass-throughts, above, requests are designed as threaded classes because this allows the smtp server to respond 
+# 'Ok' to the email input and close the connection, while the actual request (which can be computationally expensive or time-consuming) 
+# runs as a separate child thread and replies asynchronously
+
 from config import server_auto_email
 from email_utils import get_text_from_html
 from network import load_url
 
-def reply_time (email_dict, sender, subject, text, html=None):
+class reply_time (threading.Thread):
     """In reply to email sent to current-time@ -> lookup the current time and return it to the sender of this email"""
 
-    # get the time as an html page result from the US Naval Observatory Master Clock
-    time_html = load_url('http://tycho.usno.navy.mil/cgi-bin/timer.pl')
+    email_dict = None
+    sender = None
+    subject = None
+    text = None
+    html = None
 
-    if time_html is None:
-        # there was an error gettting the time data
-        send('The Current Time', 'Sorry, this service is temporarily unavailable', recipient_list=[sender], sender=server_auto_email)
-    else:
-        # auto-reply with both the text and html versions of the time report
-        time_txt = get_text_from_html(time_html.replace('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final"//EN>', ''))
-        send('The Current Time', time_txt, recipient_list=[sender], html=time_html, sender=server_auto_email)
+    def __init__ (self, email_dict, sender, subject, text, html=None):
+        threading.Thread.__init__(self)
+        self.email_dict = email_dict # this particular example doesn't do anything with the email information sent by the sender, but it's available
+        self.sender = sender
+        self.subject = subject
+        self.text = text
+        if html is not None:
+            self.html = html
+
+    def run(self):
+        # get the time as an html page result from the US Naval Observatory Master Clock
+        time_html = load_url('http://tycho.usno.navy.mil/cgi-bin/timer.pl')
+
+        if time_html is None:
+            # there was an error gettting the time data
+            send('The Current Time', 'Sorry, this service is temporarily unavailable', recipient_list=[self.sender], sender=server_auto_email)
+        else:
+            # auto-reply with both the text and html versions of the time report
+            time_txt = get_text_from_html(time_html.replace('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final"//EN>', ''))
+            send('The Current Time', time_txt, recipient_list=[self.sender], html=time_html, sender=server_auto_email)
 
 
 from lxml import etree
 
-def reply_nyc_weather (email_dict, sender, subject, text, html=None):
+class reply_nyc_weather (threading.Thread):
     """In reply to email sent to nyc-weather@ -> lookup the current weather conditions and return it to the sender of this email"""
 
-    # get the current weather for NYC from the National Weather Service feed
-    weather_xml = load_url('http://forecast.weather.gov/MapClick.php?lat=40.71980&lon=-73.99300&FcstType=dwml')
+    email_dict = None
+    sender = None
+    subject = None
+    text = None
+    html = None
 
-    if weather_xml is None:
-        # there was an error gettting the weather data
-        send('NYC Weather', 'Sorry, this service is temporarily unavailable', recipient_list=[sender], sender=server_auto_email)
-    else:
-        # parse the report from the xml and auto-reply with it as the message body
-        doc = etree.fromstring(weather_xml)
+    def __init__ (self, email_dict, sender, subject, text, html=None):
+        threading.Thread.__init__(self)
+        self.email_dict = email_dict # this particular example doesn't do anything with the email information sent by the sender, but it's available
+        self.sender = sender
+        self.subject = subject
+        self.text = text
+        if html is not None:
+            self.html = html
 
-        # find the human-readable text report in the xml
-        report = []
-        for elem in doc.xpath('//wordedForecast'):
-            for subelem in elem.getchildren():
-                if subelem.tag == 'text':
-                    report.append(subelem.text)
+    def run(self):
+        # get the current weather for NYC from the National Weather Service feed
+        weather_xml = load_url('http://forecast.weather.gov/MapClick.php?lat=40.71980&lon=-73.99300&FcstType=dwml')
 
-        # send it back to the sender
-        send('NYC Weather', '\n'.join(report), recipient_list=[sender], sender=server_auto_email)
+        if weather_xml is None:
+            # there was an error gettting the weather data
+            send('NYC Weather', 'Sorry, this service is temporarily unavailable', recipient_list=[self.sender], sender=server_auto_email)
+        else:
+            # parse the report from the xml and auto-reply with it as the message body
+            doc = etree.fromstring(weather_xml)
+
+            # find the human-readable text report in the xml
+            report = []
+            for elem in doc.xpath('//wordedForecast'):
+                for subelem in elem.getchildren():
+                    if subelem.tag == 'text':
+                        report.append(subelem.text)
+
+            # send it back to the sender
+            send('NYC Weather', ' '.join(report), recipient_list=[self.sender], sender=server_auto_email)
     

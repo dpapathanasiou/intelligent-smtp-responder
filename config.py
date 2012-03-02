@@ -19,7 +19,7 @@ pass_through_target = 'support@example.com' # ideally, use an email address on a
 
 action_mailboxes = {
 
-    # k = email inbox : v = function to call (must be defined in agents/responders.py)
+    # k = email inbox : v = threaded class to run (must be defined in agents/responders.py)
 
     'current-time' : 'reply_time',
     'nyc-weather'  : 'reply_nyc_weather',

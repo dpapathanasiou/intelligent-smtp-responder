@@ -7,6 +7,7 @@ Utilities for processing the parsed email output of messages sent through the sm
 """
 
 import re
+import time
 from lxml import html as lxml_html
 
 from email_parser import parse
@@ -90,6 +91,11 @@ def process_email (email_data):
             responders.pass_through(eml, email_data['sender'], pass_through_target, subject, body_text, body_html)
         
         elif inbox in action_mailboxes.keys():
-            # this email represents a command that requires a specific function invoked
-            # use the string representation of the function name -- defined by action_mailboxes[inbox] in config.py -- to call it
-            getattr(responders, action_mailboxes[inbox])(eml, email_data['sender'], subject, body_text, body_html)
+            # this email represents a command that requires a specific threaded class instantiated and invoked
+            # use the string representation of the class name -- defined by action_mailboxes[inbox] in config.py -- to call it
+            try:
+                response_class = getattr(responders, action_mailboxes[inbox])
+                obj = response_class(eml, email_data['sender'], subject, body_text, body_html)
+                obj.start() # kick off the request processor as a child thread so that the smtp server can close the connection immediately
+            except AttributeError, e:
+                print 'Exception:', time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()), e
