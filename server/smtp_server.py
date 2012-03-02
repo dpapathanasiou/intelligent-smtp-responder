@@ -46,7 +46,7 @@ def with_stream (fn, *args):
         if isinstance(e.args, tuple):
             printException (e.args)
         else:
-            printException ({"Socket error", e})
+            printException ({"Socket error":e})
 
 def with_stream_write (st, s):
     """Write the given string (s) to the stream (st)"""
@@ -245,15 +245,9 @@ class SMTPRequestHandler (SocketServer.StreamRequestHandler):
 
             m.run((self, {}))
 
-        # in the event of a socket error or other exception,
-        # capture the current state and cargo dict and use
-        # the information as part of the message sent to stdout
-        except socket.error, e:
-            exception_data = {'state':m.current_state}
-            if m.current_cargo:
-                exception_data['data'] = m.current_cargo[1]
-            e.args = (exception_data,)
-            raise
+        # in the event of an exception, capture the current
+        # state and cargo dict and use the information
+        # as part of the message sent to stdout
         except Exception as e:
             exception_data = {'state':m.current_state}
             if m.current_cargo:
@@ -266,8 +260,6 @@ def start():
         tcpserver = SocketServer.ThreadingTCPServer((smtp_server_domain, smtp_server_port), SMTPRequestHandler)
         tcpserver.socket.settimeout(idle_threshold)
         tcpserver.serve_forever()
-    except socket.error, e:
-        printException (e.args)
     except Exception as e:
         printException (e.args)
 
