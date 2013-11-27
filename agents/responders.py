@@ -81,7 +81,7 @@ def pass_through (email_dict, sender, target, subject, text, html=None):
 
 from config import server_auto_email
 from email_utils import get_text_from_html
-from network import load_url
+from network import get_url
 
 class reply_time (threading.Thread):
     """In reply to email sent to current-time@ -> lookup the current time and return it to the sender of this email"""
@@ -103,7 +103,7 @@ class reply_time (threading.Thread):
 
     def run(self):
         # get the time as an html page result from the US Naval Observatory Master Clock
-        time_html = load_url('http://tycho.usno.navy.mil/cgi-bin/timer.pl')
+        time_html = get_url('http://tycho.usno.navy.mil/cgi-bin/timer.pl')
 
         if time_html is None:
             # there was an error gettting the time data
@@ -136,7 +136,7 @@ class reply_nyc_weather (threading.Thread):
 
     def run(self):
         # get the current weather for NYC from the National Weather Service feed
-        weather_xml = load_url('http://forecast.weather.gov/MapClick.php?lat=40.71980&lon=-73.99300&FcstType=dwml')
+        weather_xml = get_url('http://forecast.weather.gov/MapClick.php?lat=40.71980&lon=-73.99300&FcstType=dwml')
 
         if weather_xml is None:
             # there was an error gettting the weather data
