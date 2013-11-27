@@ -100,7 +100,7 @@ mail -s "SMTP server error!" support@example.org < /tmp/smtp_server_$logfile.log
 
  Note that logfiles do not over-write each other, so you can remove that line altogether, if you'd rather not get the alert.
 
- 7. Start the server as root/sudo: 
+ 7. Start the server as root/sudo using the [run_smtps.sh](run_smtps.sh) file: 
 ```sh
 sh ./run_smtps.sh
 ```
@@ -112,3 +112,4 @@ Acknowledgements
 
 * [Paul Tyma](http://paultyma.blogspot.com/) for his description of how [Mailinator](http://mailinator.com/) works
 * [Ian Lewis](https://github.com/IanLewis) for the [email parsing logic](http://www.ianlewis.org/en/parsing-email-attachments-python) in the [email_parser.py](server/email_parser.py) file
+* [David Mertz](http://www.gnosis.cx/) for his article [Charming Python: Using state machines](http://www.ibm.com/developerworks/library/l-python-state/index.html) which is the basis of the [statemachine.py](server/statemachine.py) code
