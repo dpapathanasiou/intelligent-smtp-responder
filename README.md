@@ -1,6 +1,9 @@
 intelligent-smtp-responder
 ==========================
 
+About
+-----
+
 This is an intelligent email-based agent server, written in Python,
 using state machine logic to handle the SMTP protocol.
 
@@ -8,7 +11,7 @@ The server works by responding to email sent to designated inboxes with
 canned, dynamic, or custom replies.
 
 Among the included examples, email sent to <tt>nyc-weather@</tt> will be
-automatically replied with the current forecast for NYC, using data from
+automatically replied with the [current weather forecast for NYC](agents/weather_response_example.py), using data from
 the National Weather Service website.
 
 The basic examples do not take account the sender, subject, or email

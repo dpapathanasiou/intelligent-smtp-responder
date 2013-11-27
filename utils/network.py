@@ -60,7 +60,6 @@ def post_url (url, data, user_agent=None):
     This is preferable over a dict, since it allows for the posting of multiple variables with
     the same name: http://stackoverflow.com/a/18515489"""
 
-
     databuffer = StringIO()
     curl = pycurl.Curl()
     curl.setopt(pycurl.URL, url)
