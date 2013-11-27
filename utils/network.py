@@ -52,7 +52,14 @@ def get_url (url, user_agent=None):
     return data
 
 def post_url (url, data, user_agent=None):
-    """Make a POST to the url with the given data using pycurl and return the reply or None if unsuccessful"""
+    """Make a POST to the url with the given data using pycurl and return the reply or None if unsuccessful.
+    The data parameter is best as a list of tuples, each representing a form (variable, value) pair, e.g.:
+
+    (('multipleSelectForm', 'value1'), ('multipleSelectForm', 'value2'))
+
+    This is preferable over a dict, since it allows for the posting of multiple variables with
+    the same name: http://stackoverflow.com/a/18515489"""
+
 
     databuffer = StringIO()
     curl = pycurl.Curl()
