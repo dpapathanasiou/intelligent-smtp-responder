@@ -62,9 +62,11 @@ pass_through_target = "support@example.com"
  2. Edit the <tt>action_mailboxes</tt> dict in the [config.py](config.py) file.
 
  Each key is the name of the inbox you want the server to auto-respond to, and the
- value is the name of the function which carries out the request. 
+ value is the name of the class which is instantiated to carry out the request. 
 
- Each function needs to be implemented in the [responders.py](agents/responders.py) file. See the notes in that file for the functional prototype requirements, and also look at the [examples](agents/responders.py#L72) provided.
+ Each class needs to be implemented or referenced in the [responders.py](agents/responders.py) file. 
+
+ See the [notes there](agents/responders.py#L74) for the class and functional prototype requirements, and also look at the [time](agents/time_response_example.py) and [weather](agents/weather_response_example.py) response examples.
 
  3. (optional) Edit the <tt>pass_through_mailboxes</tt> list in the [config.py](config.py) file. 
 
