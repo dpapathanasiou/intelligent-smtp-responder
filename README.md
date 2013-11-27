@@ -105,7 +105,7 @@ mail -s "SMTP server error!" support@example.org < /tmp/smtp_server_$logfile.log
 sh ./run_smtps.sh
 ```
 
- If you'll be running it long-term, it's best to kick this off inside a screen session, from which you can detach.
+ If you'll be running it long-term, it's best to kick this off inside a [screen session](http://www.tldp.org/LDP/GNU-Linux-Tools-Summary/html/virtual-terminals.html), from which you can detach.
 
 Acknowledgements
 ----------------
