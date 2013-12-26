@@ -62,6 +62,8 @@ pass_through_target = "support@example.com"
 ```
  Ideally, the <tt>pass_through_target</tt> email address resides on a different server than the one running this code.
 
+ You can also define a <tt>local_config.py</tt> file with environment-specific configuration settings which is exempt from source control (this is basically the [django local settings approach](http://www.sparklewise.com/django-settings-for-production-and-development-best-practices/) applied to this project).
+
  2. Edit the <tt>action_mailboxes</tt> dict in the [config.py](config.py) file.
 
  Each key is the name of the inbox you want the server to auto-respond to, and the

@@ -2,9 +2,8 @@
 domain_logo = "example.org" # this is just for illustration; use your own domain here
 server_auto_email = "noreply@example.org"
 
-#smtp_server_domain = "localhost"   # use this for testing locally on smtp_server_port
+# override these settings with local_config.py as needed
 smtp_server_domain = "example.org"  # use this when running on your server (and replace this definition with your own domain)
-
 smtp_server_port   = 8888 # port for the custom SMTP server (iptables will redirect port 25 here: see set_iptables.sh)
 smtp_server_debug  = False # if True, this logs all the incoming client activity and writes it to stdout
 
@@ -25,3 +24,12 @@ action_mailboxes = {
     'nyc-weather'  : 'reply_nyc_weather',
 }
 
+
+# override any of the above settings for the local environment
+# e.g., change smtp_server_domain to 'localhost' for testing, etc.
+# the local_config.py file is not checked into source control
+
+try:
+    from local_config import *
+except ImportError:
+    pass
