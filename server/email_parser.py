@@ -12,7 +12,32 @@ from email.Parser import Parser as EmailParser
 from cStringIO import StringIO
 
 unicode_encoding = 'utf8'
-header_parts = ['From', 'To', 'Subject', 'Date', 'Reply-To', 'Mail-Reply-To', 'Mail-Followup-To', 'Message-ID', 'References', 'In-Reply-To']
+header_parts = [
+    'From',
+    'To',
+    'Cc',
+    'Bcc',
+    'Subject',
+    'Date',
+    'Reply-To',
+    'Mail-Reply-To',
+    'Mail-Followup-To',
+    'Message-ID',
+    'References',
+    'In-Reply-To'
+    'Importance',
+    'X-Priority',
+    'X-Mailer',
+    'X-AntiAbuse',
+    'X-BWhitelist',
+    'X-Source-IP',
+    'X-Source',
+    'X-Source-Args',
+    'X-Source-Dir',
+    'X-Source-Sender',
+    'X-Source-Auth',
+    'X-Email-Count',
+]
 
 def parse_attachment(message_part):
     """Return the attachment data as an object, if this part is indeed an attachment"""
