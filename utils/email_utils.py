@@ -12,15 +12,14 @@ from lxml import html as lxml_html
 
 from email_parser import parse
 from config import pass_through_mailboxes, pass_through_target, action_mailboxes
+from rfc_822_email_address_validator import is_valid_email_address
 import responders
-
-valid_email_pattern = re.compile("^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$")
 
 def valid_email_address (email_address):
     """Confirm that the email address provided is of a valid format"""
     result = False
     if email_address:
-        if valid_email_pattern.match(email_address.strip('<>')):
+        if is_valid_email_address(email_address.strip('<>')):
             result = True
     return result
 
