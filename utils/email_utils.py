@@ -9,7 +9,7 @@ Utilities for processing the parsed email output of messages sent through the sm
 import re
 from lxml import html as lxml_html
 
-from config import pass_through_mailboxes, pass_through_target, action_mailboxes
+from config import pass_through_mailboxes, action_mailboxes
 from rfc_822_email_address_validator import is_valid_email_address
 
 def valid_email_address (email_address):
