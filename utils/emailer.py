@@ -18,7 +18,7 @@ from email import Encoders
 import os
 
 import sys
-from config import server_auto_email
+from config import server_auto_email, send_outgoing_eml
 
 def to_unicode (s):
     """Convert the given byte string to unicode, using the standard encoding,
@@ -100,9 +100,15 @@ def send(subject, text, recipient_list=[], html=None, files=[], sender=None, rep
                        % os.path.basename(file))
         msg.attach(part)
 
-    smtp = smtplib.SMTP(mail_server)
-    smtp.sendmail(sender, recipient_list, msg.as_string() )
-    smtp.close()
+    if not send_outgoing_eml:
+        # write the message to stdout
+        # instead of actually sending it
+        print 'From:', sender, '\nTo:', ', '.join(recipient_list), '\n', msg.as_string()
+    else:
+        # go ahead and send it
+        smtp = smtplib.SMTP(mail_server)
+        smtp.sendmail(sender, recipient_list, msg.as_string() )
+        smtp.close()
 
 
 if __name__ == "__main__":

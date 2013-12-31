@@ -13,7 +13,8 @@ from statemachine import StateMachine
 from anti_spam import valid_ip_address, valid_subject, block_ip_address
 
 from config import domain_logo, smtp_server_domain, smtp_server_port, smtp_server_debug
-from utils.email_utils import valid_email_address, get_email_address, domain_recipients_valid, get_base_subject, process_email
+from utils.email_utils import valid_email_address, get_email_address, domain_recipients_valid, get_base_subject
+from smtp_processor import process_email
 
 cr_lf = "\r\n"
 bad_request = '550 No such user'

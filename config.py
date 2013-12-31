@@ -6,7 +6,7 @@ server_auto_email = "noreply@example.org"
 smtp_server_domain = "example.org"  # use this when running on your server (and replace this definition with your own domain)
 smtp_server_port   = 8888 # port for the custom SMTP server (iptables will redirect port 25 here: see set_iptables.sh)
 smtp_server_debug  = False # if True, this logs all the incoming client activity and writes it to stdout
-
+send_outgoing_eml  = True  # if False, emailer.send() merely prints the message to stdout instead of sending it
 
 # define the list of email addresses @smtp_server_domain which get sent to the pass_through_target address as-is with no auto-reply
 
