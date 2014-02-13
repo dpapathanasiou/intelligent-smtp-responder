@@ -13,6 +13,9 @@ send_outgoing_eml  = True  # if False, emailer.send() merely prints the message 
 pass_through_mailboxes = [ 'admin', 'administrator', 'hostmaster', 'root', 'webmaster', 'postmaster', ]
 pass_through_target = 'support@example.com' # ideally, use an email address on a different server and domain than the one running this code
 
+# 3rd party API keys 
+
+forecast_io_key = '[for weather results (use the real API key here or in local_config.py)]'
 
 # define the dict of email addresses @smtp_server_domain which invoke a specific function
 
@@ -22,6 +25,7 @@ action_mailboxes = {
 
     'current-time' : 'reply_time',
     'nyc-weather'  : 'reply_nyc_weather',
+    'weather'      : 'reply_weather',
 }
 
 

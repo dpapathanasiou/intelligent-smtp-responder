@@ -88,3 +88,4 @@ def pass_through (email_dict, sender, target, subject, text, html=None):
 
 from time_response_example import reply_time
 from weather_response_example import reply_nyc_weather
+from weather_response_example import reply_weather
