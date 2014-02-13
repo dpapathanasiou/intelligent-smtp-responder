@@ -14,10 +14,9 @@ Among the included examples, email sent to <tt>nyc-weather@</tt> will be
 automatically replied with the [current weather forecast for NYC](agents/weather_response_example.py), using data from
 the National Weather Service website.
 
-The basic examples do not take account the sender, subject, or email
-message text, but the server can be extended with natural language
-processing and other AI techniques to provide more customized
-auto-replies.
+Email sent to just <tt>weather@</tt> will return a report based on the sender's physical location, automatically determined from the email headers.
+
+With the exception of the latter, [more "intelligent" weather responder example](agents/weather_response_example.py#L79), the basic examples do not take account the sender, subject, or email message text, but the server can be extended with natural language processing and other AI techniques to provide more customized auto-replies.
 
 This code is loosely based on [Paul Tyma's](http://paultyma.blogspot.com/) [Mailinator]
 (http://mailinator.com/) in that it does not support the full range
@@ -120,3 +119,5 @@ Acknowledgements
 * [Paul Tyma](http://paultyma.blogspot.com/) for his description of how [Mailinator](http://mailinator.com/) works
 * [Ian Lewis](https://github.com/IanLewis) for the [email parsing logic](http://www.ianlewis.org/en/parsing-email-attachments-python) in the [email_parser.py](server/email_parser.py) file
 * [David Mertz](http://www.gnosis.cx/) for his article [Charming Python: Using state machines](http://www.ibm.com/developerworks/library/l-python-state/index.html) which is the basis of the [statemachine.py](server/statemachine.py) code
+* The folks at [hostip.info](http://www.hostip.info/) for their simple and elegant [ip address geolocation API](http://www.hostip.info/use.html)
+* [Forecast.io](http://forecast.io/) for their [weather report API](https://developer.forecast.io/) which is used in [the more "intelligent" weather responder example](agents/weather_response_example.py#L79)
