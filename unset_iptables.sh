@@ -10,7 +10,11 @@ iptables -t nat -F
 # confirm the redirect is gone
 iptables -t nat -L
 
-# restart networking to make the change take effect
-# (this command is for debian/ubuntu - check your distro for the specific command)
-/etc/init.d/networking stop; /etc/init.d/networking start
+# If you had created or edited an /etc/iptables.up.rules file
+# to make the redirect take effect on reboot, you should remove
+# or edit it accordingly.
 
+# For more details read:
+# http://articles.slicehost.com/2011/2/21/introducing-iptables-part-3
+# or
+# https://wiki.debian.org/iptables

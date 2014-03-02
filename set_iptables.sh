@@ -14,9 +14,17 @@ iptables -t nat -A PREROUTING -p tcp --dport 25 -j REDIRECT --to-port 8888
 # confirm the redirect is there
 iptables -t nat -L
 
-# restart networking to make the change take effect
-# (this command is for debian/ubuntu - check your distro for the specific command)
-/etc/init.d/networking stop; /etc/init.d/networking start
+# no need to restart networking,
+# but create an /etc/iptables.up.rules file
+# to make the redirect take effect on reboot.
 
-# if you ever need to remove the redirect, type this as root/sudo and restart networking:
-#iptables -t nat -F
+# For more details read:
+# http://articles.slicehost.com/2011/2/21/introducing-iptables-part-3
+# or
+# https://wiki.debian.org/iptables
+
+# if you ever need to remove the redirect,
+# run the unset_iptables.sh script in this
+# folder, and update or remove /etc/iptables.up.rules
+# as necessary
+
