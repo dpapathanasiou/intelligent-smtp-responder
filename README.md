@@ -82,7 +82,8 @@ pass_through_target = "support@example.com"
  DATA sent to the server by each client.
 
  5. Run the [set_iptables.sh](set_iptables.sh) script as root or sudo: 
-```
+
+ ```
 sh ./set_iptables.sh
 ```
 
@@ -91,27 +92,29 @@ sh ./set_iptables.sh
  Optionally, create or edit the <tt>/etc/iptables.up.rules</tt> file, so that the redirect takes effect on reboots.
 
  For more details on this option, read:
-- [http://articles.slicehost.com/2011/2/21/introducing-iptables-part-3](http://articles.slicehost.com/2011/2/21/introducing-iptables-part-3)
-- [https://wiki.debian.org/iptables](https://wiki.debian.org/iptables)
+ 
+ [http://articles.slicehost.com/2011/2/21/introducing-iptables-part-3](http://articles.slicehost.com/2011/2/21/introducing-iptables-part-3) or
+ 
+ [https://wiki.debian.org/iptables](https://wiki.debian.org/iptables)
 
  You can always undo the iptables setting by running the <tt>unset_iptables.sh</tt> script as root/sudo (remember to remove or edit <tt>/etc/iptables.up.rules</tt> as well, if you chose that option initially).
 
  6. Edit the [run_smtps.sh](run_smtps.sh) file.
 
  By default, the server runs as user <tt>daemon</tt>, but if your auto-responder agents need access to different resources/user groups, just change the user defined at the end of this line:
-```sh
+ ```sh
 su -c "export PYTHONPATH=$PYTHONPATH:$smtps:$smtps/server:$smtps/utils:$smtps/agents; python -c 'import smtp_server; smtp_server.start()' > /tmp/smtp_server_$logfile.log 2>&1" daemon
 ```
 
  The script is designed to restart in case of an error, and if you'd like to get the log by email when that happens, change the target email address in this line:
-```sh
+ ```sh
 mail -s "SMTP server error!" support@example.org < /tmp/smtp_server_$logfile.log
 ```
 
  Note that logfiles do not over-write each other, so you can remove that line altogether, if you'd rather not get the alert.
 
  7. Start the server as root/sudo using the [run_smtps.sh](run_smtps.sh) file: 
-```sh
+ ```sh
 sh ./run_smtps.sh
 ```
 
