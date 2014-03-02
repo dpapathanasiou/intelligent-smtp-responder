@@ -88,9 +88,13 @@ sh ./set_iptables.sh
 
  The default port for redirecting incoming traffic is 8888, but you can change that as necessary.
  
- If you're not using debian/ubuntu you'll need to edit the line for restarting your machine's networking service accordingly.
+ Optionally, create or edit the <tt>/etc/iptables.up.rules</tt> file, so that the redirect takes effect on reboots.
 
- You can always undo the iptables setting by running the <tt>unset_iptables.sh</tt> script as root/sudo.
+ For more details on this option, read:
+- [http://articles.slicehost.com/2011/2/21/introducing-iptables-part-3](http://articles.slicehost.com/2011/2/21/introducing-iptables-part-3)
+- [https://wiki.debian.org/iptables](https://wiki.debian.org/iptables)
+
+ You can always undo the iptables setting by running the <tt>unset_iptables.sh</tt> script as root/sudo (remember to remove or edit <tt>/etc/iptables.up.rules</tt> as well, if you chose that option initially).
 
  6. Edit the [run_smtps.sh](run_smtps.sh) file.
 
