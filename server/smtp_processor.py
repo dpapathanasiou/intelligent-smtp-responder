@@ -39,7 +39,7 @@ def process_email (email_data):
 
         if inbox in pass_through_mailboxes:
             # treat this email as a regular incoming message and pass it along to the intended inbox
-            responders.pass_through(eml, email_data['sender'], pass_through_target, subject, body_text, body_html)
+            responders.pass_through(eml, email_data['sender'], pass_through_target, '['+inbox+'@] '+subject, body_text, body_html)
         
         elif inbox in action_mailboxes.keys():
             # this email represents a command that requires a specific threaded class instantiated and invoked
