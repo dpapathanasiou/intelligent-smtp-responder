@@ -6,6 +6,10 @@ The custom smtp server: respond to all incoming email based on its inbox address
 
 """
 
+# restore normal unix behavior wrt sigpipe
+from signal import signal, SIGPIPE, SIG_DFL
+signal(SIGPIPE, SIG_DFL) 
+
 import re
 import time
 import socket, SocketServer
