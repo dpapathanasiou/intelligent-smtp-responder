@@ -20,6 +20,13 @@ do
     fi
 
     counter=`expr $counter + 1`
-    sleep 10
+
+    # don't attempt a restart unless the port is clear
+    portinuse=`lsof -i :8888 | wc -l`
+    while [ $portinuse -gt 0 ]
+    do
+	sleep 1
+    done
+
 done
 
