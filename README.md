@@ -24,7 +24,7 @@ of SMTP commands, and instead uses ip traps and timeouts to foil
 spammers and other scripts or bots, continuing [the work described here]( http://denis.papathanasiou.org/2011/11/11/re-creating-mailinator-in-python/).
 
 It also forms the basis for the server used by the [TeamWork.io]
-(http://teamwork.io/) web service.
+(http://teamwork.io/) and [ReadZap.com](http://readzap.com/) web services.
 
 Installation
 ------------
@@ -81,7 +81,11 @@ pass_through_target = "support@example.com"
  This will record the ip address, timestamp, and all commands up to
  DATA sent to the server by each client.
 
- 5. Run the [set_iptables.sh](set_iptables.sh) script as root or sudo: 
+ 5. Redirect port 25 (smtp) traffic 
+
+  a. <a href="https://en.wikipedia.org/wiki/IPv4" target="_blank">IPv4</a> servers 
+
+  Run the [set_iptables.sh](set_iptables.sh) script as root or sudo: 
 
  ```
 sh ./set_iptables.sh
@@ -89,15 +93,54 @@ sh ./set_iptables.sh
 
  The default port for redirecting incoming traffic is 8888, but you can change that as necessary.
  
- Optionally, create or edit the <tt>/etc/iptables.up.rules</tt> file, so that the redirect takes effect on reboots.
+ Optionally, create an <tt>/etc/iptables.up.rules</tt> file, so that the redirect takes effect on reboots:
+
+  ```
+iptables-save > /etc/iptables.up.rules
+vi /etc/network/if-pre-up.d/iptables
+chmod +x /etc/network/if-pre-up.d/iptables
+```
+  Where the <tt>/etc/network/if-pre-up.d/iptables</tt> file contains:
+
+  ```sh
+#!/bin/sh
+/sbin/iptables-restore < /etc/iptables.up.rules
+```
 
  For more details on this option, read:
  
  [http://articles.slicehost.com/2011/2/21/introducing-iptables-part-3](http://articles.slicehost.com/2011/2/21/introducing-iptables-part-3) or
- 
  [https://wiki.debian.org/iptables](https://wiki.debian.org/iptables)
 
  You can always undo the iptables setting by running the <tt>unset_iptables.sh</tt> script as root/sudo (remember to remove or edit <tt>/etc/iptables.up.rules</tt> as well, if you chose that option initially).
+
+  b. <a href="https://en.wikipedia.org/wiki/IPv6" target="_blank">IPv6</a> servers
+
+  *If the server you are running this software also accepts IPv6 traffic, then you will need to do the following steps as well, since some email senders, notably Google's [gmail](http://gmail.com), use IPv6 if available.*
+
+ Run the [set_ip6tables.sh](set_ip6tables.sh) script as root or sudo: 
+
+ ```
+sh ./set_ip6tables.sh
+```
+
+ As with [set_iptables.sh](set_iptables.sh), the default port for redirecting incoming traffic is 8888, but you can change that as necessary.
+
+  *__Note:__ If you change the port in [set_iptables.sh](set_iptables.sh) it __must__ be the same as the one in the [set_ip6tables.sh](set_ip6tables.sh) script.*
+ 
+ As as before, create an <tt>/etc/ip6tables.up.rules</tt> file, so that the redirect takes effect on reboots:
+
+  ```
+ip6tables-save > /etc/ip6tables.up.rules
+vi /etc/network/if-pre-up.d/iptables
+```
+  And update the <tt>/etc/network/if-pre-up.d/iptables</tt> file to contain a third line, like so:
+
+  ```sh
+#!/bin/sh
+/sbin/iptables-restore < /etc/iptables.up.rules
+/sbin/ip6tables-restore < /etc/ip6tables.up.rules
+```
 
  6. Edit the [run_smtps.sh](run_smtps.sh) file.
 
