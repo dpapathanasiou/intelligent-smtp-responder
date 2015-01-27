@@ -9,7 +9,7 @@ Utilities for processing the parsed email output of messages sent through the sm
 import re
 from lxml import html as lxml_html
 
-from config import pass_through_mailboxes, action_mailboxes
+from config import pass_through_mailboxes, action_mailboxes, default_mailbox
 from rfc_822_email_address_validator import is_valid_email_address
 
 def valid_email_address (email_address):
@@ -35,7 +35,9 @@ def domain_recipients_valid (domain_recipients=[]):
     """Confirm that the first email recipient @smtp_server_domain could correspond to a valid project (i.e., it a new project or an int) and return it"""
     result = None
     try:
-        if domain_recipients[0] in action_mailboxes.keys() or domain_recipients[0] in pass_through_mailboxes:
+        if domain_recipients[0] in action_mailboxes.keys() \
+           or domain_recipients[0] in pass_through_mailboxes \
+           or default_mailbox is not None:
             result = domain_recipients[0]
     except IndexError:
         pass

@@ -28,6 +28,7 @@ action_mailboxes = {
     'weather'      : 'weather_response_example.reply_weather',
 }
 
+default_mailbox = None # if defined, as a string in the form module.class, it will be invoked as the default responder (must be defined in agents)
 
 # override any of the above settings for the local environment
 # e.g., change smtp_server_domain to 'localhost' for testing, etc.
