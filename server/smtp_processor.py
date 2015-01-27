@@ -13,6 +13,7 @@ from email_parser import parse
 from config import pass_through_mailboxes, pass_through_target, action_mailboxes
 from utils.email_utils import get_text_from_html
 import responders
+import importlib
 
 def process_email (email_data):
     """Take the data dict returned by the smtp server for this email message and process it according to the rules defined in config.py"""
@@ -43,10 +44,13 @@ def process_email (email_data):
         
         elif inbox in action_mailboxes.keys():
             # this email represents a command that requires a specific threaded class instantiated and invoked
-            # use the string representation of the class name -- defined by action_mailboxes[inbox] in config.py -- to call it
+            # use the string representation of the module.class name -- defined by action_mailboxes[inbox] in config.py -- to call it
             try:
-                response_class = getattr(responders, action_mailboxes[inbox])
+                (resp_mod, resp_cl) = action_mailboxes[inbox].split('.')
+                # convert the string representation of the module.class to the corresponding objects
+                response_module = importlib.import_module(resp_mod)
+                response_class  = getattr(response_module, resp_cl)
                 obj = response_class(eml, email_data['sender'], subject, body_text, body_html)
                 obj.start() # kick off the request processor as a child thread so that the smtp server can close the connection immediately
-            except AttributeError, e:
+            except Exception as e:
                 print 'Exception:', time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()), e

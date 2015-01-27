@@ -21,11 +21,11 @@ forecast_io_key = '[for weather results (use the real API key here or in local_c
 
 action_mailboxes = {
 
-    # k = email inbox : v = threaded class to run (must be defined in agents/responders.py)
+    # k = email inbox : v = module.threaded class to run (modules must be defined in agents)
 
-    'current-time' : 'reply_time',
-    'nyc-weather'  : 'reply_nyc_weather',
-    'weather'      : 'reply_weather',
+    'current-time' : 'time_response_example.reply_time',
+    'nyc-weather'  : 'weather_response_example.reply_nyc_weather',
+    'weather'      : 'weather_response_example.reply_weather',
 }
 
 

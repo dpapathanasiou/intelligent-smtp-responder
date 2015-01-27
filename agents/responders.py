@@ -69,23 +69,3 @@ def pass_through (email_dict, sender, target, subject, text, html=None):
 
     # remove the attached files (they've been sent with the message in the line above)
     delete_attachments(attached_files) # TO-DO: check that all were actually removed and cleanup, if necessary
-
-
-#
-# Auto-Reply Examples
-#
-
-# The following class definitions (which are implemented in separate files for clarity)
-# corresponding to the values in the action_mailboxes dict defined in the config.py file.
-
-# These requests are designed as threaded classes because this allows the smtp server to respond 
-# 'Ok' to the email input and close the connection, while the actual request,
-# which can be computationally expensive or time-consuming, runs as a separate child thread and
-# replies asynchronously
-
-# The class names need to be included here, in responders.py, so that the getattr() logic
-# in the process_email() function in utils/email_utils.py works. 
-
-from time_response_example import reply_time
-from weather_response_example import reply_nyc_weather
-from weather_response_example import reply_weather
